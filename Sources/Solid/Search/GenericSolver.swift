@@ -21,16 +21,15 @@ extension SearchProblem {
             state: initialState,
             accumulatedCost: monoid.id
         )
-        if isGoal(node.state) {
-            return buildSolution(node)
-        }
         var seen = Set<State>()
-        seen.insert(node.state)
         var fringe = fringe()
         fringe.enqueue(node)
         while !fringe.isEmpty {
             let top = fringe.dequeue()!
-            seen.insert(node.state)
+            if isGoal(top.state) {
+                return buildSolution(top)
+            }
+            seen.insert(top.state)
             for action in actions(top.state) {
                 let newState = transition(top.state, action)
                 let newCost = cost(top.state, action)
@@ -41,9 +40,6 @@ extension SearchProblem {
                     previous: top
                 )
                 if !seen.contains(newState) {
-                    if isGoal(newState) {
-                        return buildSolution(newNode)
-                    }
                     fringe.enqueue(newNode)
                 }
             }

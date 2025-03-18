@@ -4,11 +4,13 @@ Highly customizable search algorithms.
 
 ## Topics
 
-### Solving a search problem
+### Generic search problem
 - ``SearchProblem``
 - ``SearchProblem/Solution``
 
-### Search traversal strategies
-- ``FIFOQueue``
-- ``Stack``
-- ``PriorityQueue``
+### Graph search
+- ``Graph``
+- ``Graph/breadthFirstSearch(from:to:)``
+- ``Graph/depthFirstSearch(from:to:)``
+- ``Graph/dijkstrasAlgorithmSearch(from:to:)``
+- ``Graph/aStarSearch(from:to:heuristic:)``

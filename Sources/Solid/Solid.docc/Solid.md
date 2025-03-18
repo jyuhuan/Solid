@@ -13,8 +13,8 @@ A library of abstract data structures and algorithms.
 - <doc:CreatingAlgebraicStructures>
 
 ### Algorithms
-- <doc:Solid/GraphAlgorithms>
 - <doc:SearchAlgorithms>
+- <doc:GraphAlgorithms>
 
 ### Probablistic data structures
 - <doc:ProbablisticDataStructures>

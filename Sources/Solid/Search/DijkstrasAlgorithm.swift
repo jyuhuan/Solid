@@ -19,7 +19,7 @@ extension SearchProblem where Cost: Comparable {
     /// - Returns: The solution to the search problem, If no path can be found,
     ///   `nil` is returned.
     public func solveUsingDijkstrasAlgorithm(
-        with priorityQueue: @autoclosure (() -> any PriorityQueue<Node, Cost>)
+        with priorityQueue: @autoclosure () -> any PriorityQueue<Node, Cost>
     ) -> Solution? {
         solve(with: priorityQueue())
     }
