@@ -4,13 +4,20 @@ Highly customizable search algorithms.
 
 ## Topics
 
-### Generic search problem
+### Defining a search problem
 - ``SearchProblem``
-- ``SearchProblem/Solution``
+
+### Solving a search problem
+- ``BreadthFirstSearcher``
+- ``DepthFirstSearcher``
+- ``DijkstrasAlgorithmSearcher``
+- ``AStarSearcher``
+- ``GenericSearcher``
+- ``Searcher``
+- ``SearchProblemSolution``
+- ``SearchNode``
 
 ### Graph search
 - ``Graph``
-- ``Graph/breadthFirstSearch(from:to:)``
-- ``Graph/depthFirstSearch(from:to:)``
-- ``Graph/dijkstrasAlgorithmSearch(from:to:)``
-- ``Graph/aStarSearch(from:to:heuristic:)``
+- ``Graph/path(from:to:searcher:)``
+- ``Graph/path(from:to:searcher:monoid:)``

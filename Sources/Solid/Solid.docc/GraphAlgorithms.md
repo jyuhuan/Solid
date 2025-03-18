@@ -11,8 +11,5 @@ Algorithms that run on a graph.
 - ``FloydWarshallAlgorithmResult``
 
 ### Graph search
-- ``Graph/breadthFirstSearch(from:to:)``
-- ``Graph/depthFirstSearch(from:to:)``
-- ``Graph/dijkstrasAlgorithmSearch(from:to:)``
-- ``Graph/aStarSearch(from:to:heuristic:)``
-
+- ``Graph/path(from:to:searcher:)``
+- ``Graph/path(from:to:searcher:monoid:)``

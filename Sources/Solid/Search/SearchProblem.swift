@@ -12,7 +12,7 @@
 /// Example:
 ///
 /// ```swift
-/// let problem = SearchProblem(
+/// let searchProblem = SearchProblem(
 ///     initialState: "a",
 ///     isGoal: { $0 == "d" },
 ///     actions: { state in
@@ -32,21 +32,18 @@
 ///         ][Pair(state, action)]!
 ///     }
 /// )
-/// let solution = problem.solveUsingDepthFirstSearch()
 /// ```
 ///
-/// ### Choosing a traversal order
+/// ### Solving a search problem
 ///
-/// Use one of the `solve` methods to solve an instance of `SearchProblem`:
+/// To find the solution to a search problem, use a ``Searcher``. For example,
+/// ``DepthFirstSearcher`` solves a search problem using depth-first search:
 ///
-///  - Use ``solveUsingDepthFirstSearch()`` for depth-first search,
-///  - Use ``solveUsingBreadthFirstSearch()`` for breadth-first search,
-///  - Use ``solveUsingDijkstrasAlgorithm()`` for Dijkstra's algorithm, or
-///  - Use ``solveUsingAStarSearch(heuristic:)`` for A\* search.
-///
-///  If none of these suit your needs, use ``solve(with:)`` and supply a
-///  ``Queue`` customized to your requirements.
-///
+/// ```swift
+/// let solution = DepthFirstSearcher().solve(searchProblem)
+/// print(solution?.states)  // Prints: ["a", "c", "d"]
+/// print(solution?.cost)    // Prints: 23
+/// ```
 /// ### Customizing cost accumulation
 ///
 /// If you need to modify how the cost for a search path should be accumulated,
@@ -54,11 +51,11 @@
 /// ``init(initialState:isGoal:actions:transition:cost:monoid:)``, which
 /// accepts a customized monoid.
 ///
-/// A simplified initializer,
-/// ``init(initialState:isGoal:actions:transition:cost:)``, is available for
+/// The simplified initializer
+/// ``init(initialState:isGoal:actions:transition:cost:)`` is available for
 /// search problems where the cost is a `Numeric` type. In that case, the
 /// default monoid (zero, +) will be supplied automatically.
-public struct SearchProblem<State: Hashable, Action, Cost> {
+public struct SearchProblem<State, Action, Cost> {
 
     /// The state that the search should start with.
     public let initialState: State
@@ -104,6 +101,7 @@ public struct SearchProblem<State: Hashable, Action, Cost> {
         self.cost = cost
         self.monoid = monoid
     }
+    
 }
 
 extension SearchProblem where Cost: Numeric {

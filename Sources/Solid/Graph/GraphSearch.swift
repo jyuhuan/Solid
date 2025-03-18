@@ -1,7 +1,7 @@
 extension Graph {
     
     /// The type of search problem represented by this graph.
-    public typealias GraphSearchProblem = SearchProblem<Vertex, Vertex, Weight>
+    typealias GraphSearchProblem = SearchProblem<Vertex, Vertex, Weight>
     
     func makeSearchProblem(
         from source: Vertex,
@@ -22,114 +22,27 @@ extension Graph {
         )
     }
     
-    
-    public func depthFirstSearch(
+    /// Finds a path in this graph using the specified searcher.
+    ///
+    /// - Parameters:
+    ///   - source: The starting vertex of the path to find.
+    ///   - target: The ending vertex of the path to find.
+    ///   - searcher: The searcher to use to find the path.
+    ///   - monoid: The monoid to be used for accumulating the cost on the path.
+    ///
+    /// - Returns: The path found by the searcher. `nil` if no path can be found.
+    public func path(
         from source: Vertex,
         to target: Vertex,
-        using monoid: any Monoid<Weight>,
-        with stack: @autoclosure () -> any Stack<GraphSearchProblem.Node>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
+        searcher: any Searcher<Vertex, Vertex, Weight>,
+        monoid: any Monoid<Weight>
+    ) -> SearchProblemSolution<Vertex, Vertex, Weight>? {
+        let searchProblem = makeSearchProblem(
             from: source,
             to: target,
             monoid: monoid
-        ).solveUsingDepthFirstSearch(with: stack())
-    }
-    
-    public func depthFirstSearch(
-        from source: Vertex,
-        to target: Vertex,
-        using monoid: any Monoid<Weight>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target,
-            monoid: monoid
-        ).solveUsingDepthFirstSearch()
-    }
-    
-    
-    public func breadthFirstSearch(
-        from source: Vertex,
-        to target: Vertex,
-        using monoid: any Monoid<Weight>,
-        with fifoQueue: @autoclosure () -> any FIFOQueue<GraphSearchProblem.Node>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target,
-            monoid: monoid
-        ).solveUsingBreadthFirstSearch(with: fifoQueue())
-    }
-    
-    public func breadthFirstSearch(
-        from source: Vertex,
-        to target: Vertex,
-        using monoid: any Monoid<Weight>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target,
-            monoid: monoid
-        ).solveUsingBreadthFirstSearch()
-    }
-    
-}
-
-
-extension Graph where Weight: Comparable {
-    
-    public func dijkstrasAlgorithmSearch(
-        from source: Vertex,
-        to target: Vertex,
-        using monoid: any Monoid<Weight>,
-        with priorityQueue: @autoclosure () -> any PriorityQueue<GraphSearchProblem.Node, Weight>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target,
-            monoid: monoid
-        ).solveUsingDijkstrasAlgorithm(with: priorityQueue())
-    }
-    
-    public func dijkstrasAlgorithmSearch(
-        from source: Vertex,
-        to target: Vertex,
-        using monoid: any Monoid<Weight>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target,
-            monoid: monoid
-        ).solveUsingDijkstrasAlgorithm()
-    }
-    
-    
-    public func aStarSearch(
-        from source: Vertex,
-        to target: Vertex,
-        using monoid: any Monoid<Weight>,
-        heuristic: @escaping (Vertex) -> Weight,
-        priorityQueue: (@escaping (Vertex) -> Weight) -> any PriorityQueue<GraphSearchProblem.Node, Weight>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target,
-            monoid: monoid
-        ).solveUsingAStarSearch(heuristic: heuristic, priorityQueue: priorityQueue)
-    }
-    
-    public func aStarSearch(
-        from source: Vertex,
-        to target: Vertex,
-        using monoid: any Monoid<Weight>,
-        heuristic: @escaping (Vertex) -> Weight
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target,
-            monoid: monoid
-        ).solveUsingAStarSearch(heuristic: heuristic)
+        )
+        return searcher.solve(searchProblem)
     }
 
 }
@@ -147,103 +60,25 @@ extension Graph where Weight: Numeric {
             monoid: newMonoid(id: Weight.zero, op: +)
         )
     }
-
     
-    public func depthFirstSearch(
+    /// Finds a path in this graph using the specified searcher.
+    ///
+    /// - Parameters:
+    ///   - source: The starting vertex of the path to find.
+    ///   - target: The ending vertex of the path to find.
+    ///   - searcher: The searcher to use to find the path.
+    ///
+    /// - Returns: The path found by the searcher. `nil` if no path can be found.
+    public func path(
         from source: Vertex,
         to target: Vertex,
-        with stack: @autoclosure () -> any Stack<GraphSearchProblem.Node>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
+        searcher: any Searcher<Vertex, Vertex, Weight>
+    ) -> SearchProblemSolution<Vertex, Vertex, Weight>? {
+        let searchProblem = makeSearchProblem(
             from: source,
             to: target
-        ).solveUsingDepthFirstSearch(with: stack())
+        )
+        return searcher.solve(searchProblem)
     }
     
-    /// Finds the path between two vertices using depth-first search.
-    public func depthFirstSearch(
-        from source: Vertex,
-        to target: Vertex
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target
-        ).solveUsingDepthFirstSearch()
-    }
-    
-    
-    public func breadthFirstSearch(
-        from source: Vertex,
-        to target: Vertex,
-        with fifoQueue: @autoclosure () -> any FIFOQueue<GraphSearchProblem.Node>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target
-        ).solveUsingBreadthFirstSearch(with: fifoQueue())
-    }
-    
-    /// Finds the path between two vertices using breadth-first search.
-    public func breadthFirstSearch(
-        from source: Vertex,
-        to target: Vertex
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target
-        ).solveUsingBreadthFirstSearch()
-    }
-
-
-}
-
-extension Graph where Weight: Numeric & Comparable {
-    
-    public func dijkstrasAlgorithmSearch(
-        from source: Vertex,
-        to target: Vertex,
-        with priorityQueue: @autoclosure () -> any PriorityQueue<GraphSearchProblem.Node, Weight>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target
-        ).solveUsingDijkstrasAlgorithm(with: priorityQueue())
-    }
-    
-    /// Finds the shortest path between two vertices using Dijkstra's algorithm.
-    public func dijkstrasAlgorithmSearch(
-        from source: Vertex,
-        to target: Vertex
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target
-        ).solveUsingDijkstrasAlgorithm()
-    }
-    
-    
-    public func aStarSearch(
-        from source: Vertex,
-        to target: Vertex,
-        heuristic: @escaping (Vertex) -> Weight,
-        priorityQueue: (@escaping (Vertex) -> Weight) -> any PriorityQueue<GraphSearchProblem.Node, Weight>
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target
-        ).solveUsingAStarSearch(heuristic: heuristic, priorityQueue: priorityQueue)
-    }
-
-    /// Finds the shortest path between two vertices using A\* search.
-    public func aStarSearch(
-        from source: Vertex,
-        to target: Vertex,
-        heuristic: @escaping (Vertex) -> Weight
-    ) -> GraphSearchProblem.Solution? {
-        makeSearchProblem(
-            from: source,
-            to: target
-        ).solveUsingAStarSearch(heuristic: heuristic)
-    }
-
 }
